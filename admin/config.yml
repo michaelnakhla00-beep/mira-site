@@ -1,0 +1,47 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "site"
+    label: "Site Content"
+    files:
+      - label: "Hero Section"
+        name: "hero"
+        file: "content/hero.json"
+        format: json
+        fields:
+          - { label: "Eyebrow Text", name: "eyebrow", widget: "string", default: "A Legacy of Taste & Trust" }
+          - { label: "Main Headline", name: "headline", widget: "string", default: "Premium Tropical Beverages & Food Products" }
+          - { label: "Lead Text", name: "lead", widget: "text", default: "From guava nectar to coconut juice — global flavors made local by Mira." }
+
+      - label: "About Section"
+        name: "about"
+        file: "content/about.json"
+        format: json
+        fields:
+          - { label: "Section Heading", name: "heading", widget: "string", default: "Over 40 Years of Excellence" }
+          - { label: "About Paragraph", name: "paragraph", widget: "text", default: "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability." }
+
+      - label: "Sustainability Section"
+        name: "sustainability"
+        file: "content/sustainability.json"
+        format: json
+        fields:
+          - { label: "Section Heading", name: "heading", widget: "string", default: "Sustainability & Responsibility" }
+          - { label: "Description", name: "description", widget: "text", default: "Partnering with ethical suppliers and advancing responsible practices across our value chain." }
+
+      - label: "Contact Information"
+        name: "contact"
+        file: "content/contact.json"
+        format: json
+        fields:
+          - { label: "Address", name: "address", widget: "string", default: "11 Elkins Rd, East Brunswick, NJ 08816" }
+          - { label: "Phone", name: "phone", widget: "string", default: "+1 (732) 613-7201" }
+          - { label: "Email", name: "email", widget: "string", default: "info@mirainternationalfoods.com" }
+          - { label: "Contact Heading", name: "heading", widget: "string", default: "Let's Build Something Great" }
+          - { label: "Contact Description", name: "description", widget: "text", default: "Interested in carrying our products or discussing private-label opportunities?" }
+

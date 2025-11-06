@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mira International Foods — Premium Tropical Beverages & Food Products</title>
+  <meta name="description" content="Mira International Foods crafts and distributes premium tropical beverages and food products to retailers nationwide. Global sourcing. Local reliability.">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mira International Foods — Premium Tropical Beverages & Food Products">
+  <meta property="og:description" content="Globally sourced. Consistently delivered. Trusted by retailers nationwide.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="miracover.png">
+  <meta property="og:url" content="/">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Favicon -->
+  <link rel="icon" href="miralogo.png" type="image/png" />
+  <!-- Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <!-- Styles -->
+  <link rel="preload" as="image" href="miracover.png"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased bg-[var(--mist)] text-[var(--ink)]">
+
+  <!-- ===== Top Navigation (clean, corporate) ===== -->
+  <header id="site-nav" class="brand-nav fixed top-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between h-[72px]">
+        <a href="#home" class="flex items-center gap-3">
+          <img src="miralogo.png" alt="Mira logo" class="h-8 w-auto" />
+          <span class="font-semibold tracking-tight hidden sm:inline">Mira International Foods</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm">
+          <a href="#about" class="nav-link">About</a>
+          <a href="#products" class="nav-link">Products</a>
+          <a href="#facilities" class="nav-link">Facilities</a>
+          <a href="#sustainability" class="nav-link">Sustainability</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="#contact" class="hidden md:inline-flex btn btn-primary">Partner With Us</a>
+          <button id="menuBtn" aria-label="Open menu" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-black/10 bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </header>
+
+<!-- ===== Mobile Overlay (Translucent White with Animation) ===== -->
+<div
+  id="mobileOverlay"
+  class="mobile-overlay md:hidden fixed inset-0 bg-white/95 backdrop-blur-md z-[60] flex flex-col translate-y-[-100%] transition-transform duration-500 ease-out"
+  aria-hidden="true"
+>
+  <!-- Top Bar -->
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between border-b border-gray-200">
+    <a href="#home" class="flex items-center gap-3">
+      <img src="miralogo.png" alt="Mira logo" class="h-8 w-auto" />
+      <span class="font-semibold tracking-tight text-[var(--navy)]">Mira International Foods</span>
+    </a>
+    <button
+      id="closeMenu"
+      aria-label="Close menu"
+      class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-black/10 bg-white hover:bg-gray-100 transition"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Nav Links -->
+  <nav class="flex-1 flex flex-col items-center justify-center text-center space-y-6 text-lg font-semibold text-[var(--navy)]">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#products" class="mobile-link">Products</a>
+    <a href="#facilities" class="mobile-link">Facilities</a>
+    <a href="#sustainability" class="mobile-link">Sustainability</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#contact" class="btn btn-primary mt-6 px-8 py-3">Partner With Us</a>
+  </nav>
+
+  <!-- Footer Note -->
+  <div class="py-4 text-center text-xs text-gray-500 border-t border-gray-200">
+    © <span id="year"></span> Mira International Foods
+  </div>
+</div>
+
+  <!-- ===== Editorial Hero ===== -->
+  <section id="home" class="hero-parallax relative min-h-[84vh] flex items-end">
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="relative z-10 w-full">
+      <div class="max-w-7xl mx-auto px-6 py-24 md:py-32">
+        <div class="max-w-4xl text-white" data-aos="fade-up">
+          <p class="eyebrow mb-4">A Legacy of Taste & Trust</p>
+          <h1 class="mega-headline mb-6">Premium Tropical Beverages & Food Products</h1>
+          <p class="lead mb-8">From guava nectar to coconut juice — global flavors made local by Mira.</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="#products" class="btn btn-primary">Explore Products</a>
+            <a href="#about" class="btn btn-ghost">Our Story</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- subtle brand ribbon -->
+    <div class="brand-ribbon"></div>
+  </section>
+
+  <div class="gold-line my-10 md:my-14"></div>
+
+  <!-- ===== About ===== -->
+  <section id="about" class="py-14 md:py-20">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div data-aos="fade-up">
+        <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-5">Over 40 Years of Excellence</h2>
+        <p class="text-[var(--stone)] leading-relaxed mb-6">
+          Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we’ve crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability.
+        </p>
+        <div class="grid grid-cols-3 gap-5">
+          <div class="card p-5 text-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="serif text-2xl text-[var(--navy)] counter" data-target="40">0</div>
+            <div class="stat-label">Years</div>
+          </div>
+          <div class="card p-5 text-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="serif text-2xl text-[var(--navy)] counter" data-target="30000">0</div>
+            <div class="stat-label">Retail Partners</div>
+          </div>
+          <div class="card p-5 text-center" data-aos="fade-up" data-aos-delay="300">
+            <div class="serif text-2xl text-[var(--navy)]">$<span class="counter" data-target="2">0</span>M+</div>
+            <div class="stat-label">Facility Investment</div>
+          </div>
+        </div>
+      </div>
+      <div data-aos="fade-left">
+        <img src="miracover.png" alt="Mira heritage and quality" loading="lazy" class="w-full rounded-2xl object-cover aspect-hero ring-1 ring-black/10" />
+      </div>
+    </div>
+  </section>
+
+<!-- PRODUCTS / BRAND SHOWCASE -->
+<section id="products" class="py-20 bg-white text-center overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+      EXPLORE <span class="font-normal text-[var(--stone)]">our products</span>
+    </h2>
+    <p class="text-[var(--stone)] mb-10">
+      Premium tropical beverages and food products that celebrate authentic flavor.
+    </p>
+
+    <!-- Carousel -->
+    <div class="relative">
+      <button id="slidePrev" class="nav-btn left-4 md:left-10">&#10094;</button>
+
+      <div
+        id="brandCarousel"
+        class="flex gap-10 overflow-x-auto scroll-smooth px-16 pb-4 no-scrollbar justify-start"
+      >
+        <!-- 8 Brand Items -->
+        <div
+          class="brand"
+          data-title="Guava Nectar"
+          data-desc="A rich tropical drink made from fresh guavas — sweet, refreshing, and naturally vibrant."
+          data-img="https://images.pexels.com/photos/5945646/pexels-photo-5945646.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/5945646/pexels-photo-5945646.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Guava Nectar"
+          />
+          <p>Guava Nectar</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Mango Nectar"
+          data-desc="Golden mango nectar bursting with flavor — a tropical staple loved worldwide."
+          data-img="https://images.pexels.com/photos/5945636/pexels-photo-5945636.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/5945636/pexels-photo-5945636.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Mango Nectar"
+          />
+          <p>Mango Nectar</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Coconut Juice"
+          data-desc="Pure and refreshing coconut juice — rich in electrolytes and natural sweetness."
+          data-img="https://images.pexels.com/photos/2080519/pexels-photo-2080519.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/2080519/pexels-photo-2080519.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Coconut Juice"
+          />
+          <p>Coconut Juice</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Fruit Cocktail"
+          data-desc="A perfect blend of pineapple, papaya, and guava for a truly tropical experience."
+          data-img="https://images.pexels.com/photos/5945627/pexels-photo-5945627.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/5945627/pexels-photo-5945627.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Fruit Cocktail"
+          />
+          <p>Fruit Cocktail</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Pineapple Nectar"
+          data-desc="Bright, tangy, and naturally sweet pineapple nectar — pure tropical delight."
+          data-img="https://images.pexels.com/photos/615701/pexels-photo-615701.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/615701/pexels-photo-615701.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Pineapple Nectar"
+          />
+          <p>Pineapple Nectar</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Strawberry Banana"
+          data-desc="A creamy and refreshing blend of strawberry and banana nectar — smooth perfection."
+          data-img="https://images.pexels.com/photos/6542769/pexels-photo-6542769.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/6542769/pexels-photo-6542769.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Strawberry Banana"
+          />
+          <p>Strawberry Banana</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Aloe Vera Drink"
+          data-desc="A refreshing beverage infused with real aloe pulp and a hint of sweetness."
+          data-img="https://images.pexels.com/photos/5945634/pexels-photo-5945634.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/5945634/pexels-photo-5945634.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Aloe Vera Drink"
+          />
+          <p>Aloe Vera Drink</p>
+        </div>
+        <div
+          class="brand"
+          data-title="Tropical Blend"
+          data-desc="A multi-fruit nectar combining mango, guava, and pineapple for the ultimate refreshment."
+          data-img="https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600"
+        >
+          <img
+            src="https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="Tropical Blend"
+          />
+          <p>Tropical Blend</p>
+        </div>
+      </div>
+
+      <button id="slideNext" class="nav-btn right-4 md:right-10">&#10095;</button>
+    </div>
+  </div>
+
+<!-- Product Modal -->
+<div id="productModal">
+  <div class="modal-content">
+    <span id="closeModal" class="close-btn">&times;</span>
+    <div class="flex flex-col md:flex-row gap-6 items-center">
+      <img id="modalImg" src="" alt="Product image" class="w-32 h-32 object-cover rounded-2xl ring-1 ring-gray-200" />
+      <div class="text-left">
+        <h3 id="modalTitle" class="text-2xl font-semibold text-[var(--navy)] mb-2"></h3>
+        <p id="modalDesc" class="text-gray-600 mb-5 text-[0.95rem] leading-relaxed"></p>
+        <div class="flex gap-4">
+          <a href="#" class="px-5 py-2 rounded-full border border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white transition">Learn More</a>
+          <a href="#contact" class="px-5 py-2 rounded-full bg-[var(--navy)] text-white hover:opacity-90 transition">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- ===== Facilities ===== -->
+  <section id="facilities" class="py-14 md:py-20"> 
+    <div class="max-w-7xl mx-auto px-6">
+<div class="max-w-2xl mx-auto text-center" data-aos="fade-up">
+  <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+    Facilities & Operations
+  </h2>
+  <p class="text-[var(--stone)]">
+    Strategic locations and rigorous standards for optimal service.
+  </p>
+</div>
+      <div class="mt-10 grid md:grid-cols-2 gap-7">
+        <div class="card p-6" data-aos="fade-right">
+          <img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800" alt="East Brunswick headquarters" class="w-full rounded-xl mb-5 aspect-card object-cover" />
+          <h3 class="font-semibold text-[var(--navy)] mb-2">East Brunswick, NJ — Headquarters</h3>
+          <p class="text-gray-600 text-sm">11 Elkins Rd. Our main hub coordinating nationwide distribution via major East Coast ports.</p>
+        </div>
+        <div class="card p-6" data-aos="fade-left">
+          <img src="https://images.pexels.com/photos/4484072/pexels-photo-4484072.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Beaufort County expansion" class="w-full rounded-xl mb-5 aspect-card object-cover" />
+          <h3 class="font-semibold text-[var(--navy)] mb-2">Beaufort County, SC — Expansion</h3>
+          <p class="text-gray-600 text-sm">48,960 sq. ft. facility enhancing logistics, production and capacity to serve the Southeast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ===== Sustainability ===== -->
+<section id="sustainability" class="py-14 md:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-2xl mx-auto text-center" data-aos="fade-up">
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+        Sustainability & Responsibility
+      </h2>
+      <p class="text-[var(--stone)]">
+        Partnering with ethical suppliers and advancing responsible practices across our value chain.
+      </p>
+    </div>
+    <div class="mt-10 grid md:grid-cols-3 gap-7">
+      <div class="card p-6" data-aos="fade-up">
+        <h3 class="card-title">Responsible Sourcing</h3>
+        <p class="card-copy">Long-term partnerships with suppliers aligned on ethics and quality.</p>
+      </div>
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="card-title">Efficient Logistics</h3>
+        <p class="card-copy">Optimized routes for timely delivery and reduced environmental impact.</p>
+      </div>
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="card-title">Packaging Innovation</h3>
+        <p class="card-copy">Exploring recyclable, reduced-waste formats without compromising product integrity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Global Presence ===== -->
+<section id="global" class="py-14 md:py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-2xl mx-auto text-center mb-10" data-aos="fade-up">
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+        Global Presence
+      </h2>
+      <p class="text-[var(--stone)]">
+        Sourcing from trusted partners across key regions to meet U.S. retail demand.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <!-- Left: Image -->
+      <div class="relative" data-aos="fade-right">
+        <img
+          src="sus.png"
+          alt="Aerial photo of wind turbines near fields — symbolizing global sustainability and renewable energy"
+          class="w-full md:w-[90%] rounded-2xl object-cover aspect-[4/3] shadow-lg"
+        />
+        <!-- Soft gold overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[rgba(230,199,135,0.35)] to-transparent rounded-2xl pointer-events-none"></div>
+      </div>
+
+      <!-- Right: Info Cards -->
+      <div class="space-y-6" data-aos="fade-left">
+        <div class="card p-6">
+          <h3 class="font-semibold text-[var(--navy)] mb-2">Global Partnerships</h3>
+          <p class="text-gray-600 text-sm">
+            Trusted collaborations with suppliers across Latin America, Asia, and the Caribbean.
+          </p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-semibold text-[var(--navy)] mb-2">Nationwide Reach</h3>
+          <p class="text-gray-600 text-sm">
+            Distribution to over 30,000 retail partners throughout the U.S. with strong East Coast logistics.
+          </p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-semibold text-[var(--navy)] mb-2">Sustainability Commitment</h3>
+          <p class="text-gray-600 text-sm">
+            Supporting renewable sourcing and minimizing environmental impact through efficient operations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact Section (Info + Netlify Form + Popup) ===== -->
+<section id="contact" class="py-20 bg-white border-t border-gray-100">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
+    <!-- Left: Company Info -->
+    <div class="text-left" data-aos="fade-right">
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+        Let’s Build Something Great
+      </h2>
+      <p class="text-[var(--stone)] mb-8">
+        Interested in carrying our products or discussing private-label opportunities?
+      </p>
+
+      <div class="space-y-6">
+        <div>
+          <div class="stat-label mb-1">Address</div>
+          <p class="font-medium">11 Elkins Rd, East Brunswick, NJ 08816</p>
+        </div>
+        <div>
+          <div class="stat-label mb-1">Phone</div>
+          <a href="tel:+17326137201" class="font-medium hover:underline">+1 (732) 613-7201</a>
+        </div>
+        <div>
+          <div class="stat-label mb-1">Email</div>
+          <a href="mailto:info@mirainternationalfoods.com" class="font-medium hover:underline">
+            info@mirainternationalfoods.com
+          </a>
+        </div>
+        <div>
+          <a
+            href="mailto:info@mirainternationalfoods.com"
+            class="btn btn-primary mt-4 inline-flex items-center justify-center"
+          >
+            Contact Sales
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Netlify Form -->
+    <div data-aos="fade-left">
+      <form
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="bg-[var(--mist)] p-8 rounded-2xl shadow-md text-left space-y-6"
+        id="contactForm"
+      >
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hidden">
+          <label>Don’t fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-[var(--navy)] mb-1">
+              Full Name <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              required
+              placeholder="John Doe"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--gold)] focus:outline-none text-[var(--ink)]"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--navy)] mb-1">
+              Email <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="example@email.com"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--gold)] focus:outline-none text-[var(--ink)]"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--navy)] mb-1">
+            Company <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="company"
+            required
+            placeholder="Mira International Foods"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--gold)] focus:outline-none text-[var(--ink)]"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--navy)] mb-1">
+            Message <span class="text-red-500">*</span>
+          </label>
+          <textarea
+            name="message"
+            rows="4"
+            required
+            placeholder="Tell us a bit about your inquiry..."
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--gold)] focus:outline-none resize-none text-[var(--ink)]"
+          ></textarea>
+        </div>
+
+        <div class="text-center pt-4">
+          <button
+            type="submit"
+            class="btn btn-primary px-10 py-3 font-semibold text-[var(--navy)] hover:opacity-90"
+          >
+            Send Message
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div
+    id="successPopup"
+    class="fixed inset-0 hidden items-center justify-center bg-black/60 z-[80]"
+  >
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm text-center animate-fadeIn">
+      <h3 class="text-2xl font-semibold text-[var(--navy)] mb-3">Thank You!</h3>
+      <p class="text-gray-600 mb-6">Your message has been sent successfully. We’ll be in touch soon.</p>
+      <button
+        id="closeSuccess"
+        class="px-6 py-2 rounded-full bg-[var(--navy)] text-white hover:opacity-90 transition"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ===== Corporate Footer (Nestlé-style) ===== -->
+<footer class="bg-white border-t border-gray-200 text-[var(--ink)]">
+  <div class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
+    <!-- Column 1: Brand summary -->
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        <img src="miralogo.png" alt="Mira logo" class="h-9 w-auto" />
+        <span class="font-semibold text-lg text-[var(--navy)]">Mira International Foods</span>
+      </div>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        We craft premium tropical beverages and food products that bring global flavor to local markets — for today and generations to come.
+      </p>
+    </div>
+
+    <!-- Column 2: Useful Links -->
+    <div>
+      <h4 class="font-semibold text-[var(--navy)] mb-3">Useful Links</h4>
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li><a href="#contact" class="hover:text-[var(--gold)] transition">Contact Us</a></li>
+        <li><a href="#products" class="hover:text-[var(--gold)] transition">Explore Products</a></li>
+        <li><a href="#about" class="hover:text-[var(--gold)] transition">Our Story</a></li>
+        <li><a href="#sustainability" class="hover:text-[var(--gold)] transition">Sustainability</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Company -->
+    <div>
+      <h4 class="font-semibold text-[var(--navy)] mb-3">Company</h4>
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li><a href="#facilities" class="hover:text-[var(--gold)] transition">Facilities</a></li>
+        <li><a href="#global" class="hover:text-[var(--gold)] transition">Global Presence</a></li>
+        <li><a href="#about" class="hover:text-[var(--gold)] transition">Our History</a></li>
+        <li><a href="#contact" class="hover:text-[var(--gold)] transition">Partner With Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 4: Contact -->
+    <div>
+      <h4 class="font-semibold text-[var(--navy)] mb-3">Contact</h4>
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li>11 Elkins Rd, East Brunswick, NJ 08816</li>
+        <li><a href="tel:+17326137201" class="hover:text-[var(--gold)] transition">+1 (732) 613-7201</a></li>
+        <li><a href="mailto:info@mirainternationalfoods.com" class="hover:text-[var(--gold)] transition">info@mirainternationalfoods.com</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Divider line -->
+  <div class="border-t border-gray-200"></div>
+
+  <!-- Social + Copyright -->
+  <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col items-center md:flex-row md:justify-between gap-4">
+    <div class="flex items-center gap-4 text-gray-500">
+      <a href="#" aria-label="LinkedIn" class="hover:text-[var(--navy)] transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm8.5 0h4.8v2.3h.07c.67-1.2 2.3-2.5 4.73-2.5 5.05 0 5.98 3.3 5.98 7.6V24h-5V16.4c0-1.8-.03-4.2-2.55-4.2-2.55 0-2.94 2-2.94 4V24h-5V8z"/></svg>
+      </a>
+      <a href="#" aria-label="Instagram" class="hover:text-[var(--navy)] transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zm0 1.5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm5.25-.75a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+      </a>
+      <a href="#" aria-label="Facebook" class="hover:text-[var(--navy)] transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .595 0 1.326v21.348C0 23.406.595 24 1.325 24h11.492v-9.294H9.847V11.01h2.97V8.414c0-2.937 1.793-4.543 4.414-4.543 1.255 0 2.337.093 2.65.135v3.07h-1.818c-1.426 0-1.7.678-1.7 1.67v2.263h3.396l-.443 3.696h-2.953V24h5.789C23.406 24 24 23.405 24 22.674V1.326C24 .595 23.406 0 22.675 0z"/></svg>
+      </a>
+    </div>
+
+    <div class="text-xs text-gray-500 text-center md:text-right">
+      © <span id="year"></span> Mira International Foods, Inc. All rights reserved.  
+      <span class="hidden md:inline">|</span> <a href="#" class="hover:text-[var(--navy)] transition">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

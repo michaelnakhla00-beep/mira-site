@@ -3,15 +3,14 @@
   "description": "Strategic locations and rigorous standards for optimal service.",
   "facilities": [
     {
-      "title": "East Brunswick, NJ — Headquarters",
-      "description": "11 Elkins Rd. Our main hub coordinating nationwide distribution via major East Coast ports.",
-      "image": "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
-    },
-    {
       "title": "Beaufort County, SC — Expansion",
       "description": "48,960 sq. ft. facility enhancing logistics, production and capacity to serve the Southeast.",
       "image": "https://images.pexels.com/photos/4484072/pexels-photo-4484072.jpeg?auto=compress&cs=tinysrgb&w=800"
+    },
+    {
+      "title": "East Brunswick, NJ — Headquarters",
+      "description": "11 Elkins Rd. Our main hub coordinating nationwide distribution via major East Coast ports.",
+      "image": "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
     }
   ]
 }
-

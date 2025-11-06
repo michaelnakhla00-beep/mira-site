@@ -121,7 +121,7 @@
         <p class="text-[var(--stone)] leading-relaxed mb-6 about-description">
           Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability.
         </p>
-        <div class="grid grid-cols-3 gap-5">
+        <div class="about-stats grid grid-cols-3 gap-5">
           <div class="card p-5 text-center" data-aos="fade-up" data-aos-delay="100">
             <div class="serif text-2xl text-[var(--navy)] counter" data-target="40">0</div>
             <div class="stat-label">Years</div>
@@ -318,7 +318,7 @@
         Partnering with ethical suppliers and advancing responsible practices across our value chain.
       </p>
     </div>
-    <div class="mt-10 grid md:grid-cols-3 gap-7">
+    <div class="sustain-items mt-10 grid md:grid-cols-3 gap-7">
       <div class="card p-6" data-aos="fade-up">
         <h3 class="card-title">Responsible Sourcing</h3>
         <p class="card-copy">Long-term partnerships with suppliers aligned on ethics and quality.</p>
@@ -637,9 +637,108 @@
           const about = await aboutRes.json();
           const aboutTitle = document.querySelector('.about-title');
           const aboutDescription = document.querySelector('.about-description');
+          const statsContainer = document.querySelector('.about-stats');
           
           if (aboutTitle) aboutTitle.textContent = about.heading || '';
           if (aboutDescription) aboutDescription.textContent = about.paragraph || about.text || '';
+          
+          // Load stats if they exist
+          if (about.stats && Array.isArray(about.stats) && about.stats.length > 0 && statsContainer) {
+            statsContainer.innerHTML = '';
+            about.stats.forEach((stat, index) => {
+              const delay = (index + 1) * 100;
+              const label = stat.label || '';
+              const description = stat.description || '';
+              
+              // Check if label is numeric (for counter animation)
+              const numericMatch = label.replace(/[^0-9]/g, '');
+              const isNumeric = numericMatch.length > 0;
+              
+              const card = document.createElement('div');
+              card.className = 'card p-5 text-center';
+              card.setAttribute('data-aos', 'fade-up');
+              card.setAttribute('data-aos-delay', delay.toString());
+              
+              if (isNumeric) {
+                // Extract numeric value for counter
+                const numericValue = parseInt(numericMatch, 10);
+                const prefix = label.includes('$') ? '$' : '';
+                let suffix = '';
+                if (label.includes('M+')) suffix = 'M+';
+                else if (label.includes('K+')) suffix = 'K+';
+                else if (label.includes('M')) suffix = 'M';
+                else if (label.includes('K')) suffix = 'K';
+                
+                // Build the counter HTML based on prefix/suffix
+                let counterHTML = '';
+                if (prefix || suffix) {
+                  // Has prefix or suffix - wrap counter in span
+                  counterHTML = `
+                    <div class="serif text-2xl text-[var(--navy)]">${prefix}<span class="counter" data-target="${numericValue}">0</span>${suffix}</div>
+                  `;
+                } else {
+                  // Pure number - counter on the div itself
+                  counterHTML = `
+                    <div class="serif text-2xl text-[var(--navy)] counter" data-target="${numericValue}">0</div>
+                  `;
+                }
+                
+                card.innerHTML = counterHTML + `<div class="stat-label">${description}</div>`;
+              } else {
+                // Non-numeric label, display as-is
+                card.innerHTML = `
+                  <div class="serif text-2xl text-[var(--navy)]">${label}</div>
+                  <div class="stat-label">${description}</div>
+                `;
+              }
+              
+              statsContainer.appendChild(card);
+            });
+            
+            // Re-initialize counter observer for new elements
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+              // Use the same counter animation logic as script.js
+              const animateCounter = (el, target, dur = 1400) => {
+                let start = 0;
+                const step = Math.max(1, Math.ceil(target / (dur / 16)));
+                const tick = () => {
+                  start += step;
+                  if (start < target) {
+                    el.textContent = start.toLocaleString();
+                    requestAnimationFrame(tick);
+                  } else {
+                    el.textContent = target.toLocaleString();
+                  }
+                };
+                tick();
+              };
+              
+              const countersObserved = new IntersectionObserver(
+                (entries) => {
+                  entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                      e.target.querySelectorAll('.counter').forEach((c) => {
+                        const t = parseInt(c.getAttribute('data-target'), 10) || 0;
+                        if (t > 0) {
+                          animateCounter(c, t);
+                        }
+                      });
+                      countersObserved.unobserve(e.target);
+                    }
+                  });
+                },
+                { threshold: 0.3 }
+              );
+              
+              // Observe each stat card for counter animation
+              statsContainer.querySelectorAll('.card').forEach((card) => {
+                countersObserved.observe(card);
+              });
+            }
+            
+            console.log('✅ About stats loaded');
+          }
           
           console.log('✅ About content loaded');
         } else {
@@ -652,9 +751,40 @@
           const sustain = await sustainRes.json();
           const sustainTitle = document.querySelector('.sustain-title');
           const sustainParagraph = document.querySelector('.sustain-paragraph');
+          const sustainContainer = document.querySelector('.sustain-items');
           
           if (sustainTitle) sustainTitle.textContent = sustain.heading || '';
           if (sustainParagraph) sustainParagraph.textContent = sustain.description || '';
+          
+          // Load sustainability boxes if they exist
+          if (sustain.items && Array.isArray(sustain.items) && sustain.items.length > 0 && sustainContainer) {
+            sustainContainer.innerHTML = '';
+            sustain.items.forEach((item, index) => {
+              const delay = index * 100;
+              const title = item.title || '';
+              const text = item.text || '';
+              
+              const box = document.createElement('div');
+              box.className = 'card p-6';
+              box.setAttribute('data-aos', 'fade-up');
+              if (delay > 0) {
+                box.setAttribute('data-aos-delay', delay.toString());
+              }
+              box.innerHTML = `
+                <h3 class="card-title">${title}</h3>
+                <p class="card-copy">${text}</p>
+              `;
+              
+              sustainContainer.appendChild(box);
+            });
+            
+            // Re-initialize AOS for new elements if available
+            if (window.AOS) {
+              AOS.refresh();
+            }
+            
+            console.log('✅ Sustainability boxes loaded');
+          }
           
           console.log('✅ Sustainability content loaded');
         } else {

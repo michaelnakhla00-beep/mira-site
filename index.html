@@ -613,6 +613,9 @@
   <!-- CMS Content Loader -->
   <script>
     async function loadCMSContent() {
+      // Add loading class to body to hide content initially
+      document.body.classList.add('cms-loading');
+      
       try {
         // HERO SECTION
         const heroRes = await fetch('/content/hero.json');
@@ -1039,6 +1042,10 @@
 
       } catch (error) {
         console.warn('⚠️ Some CMS content could not be loaded:', error);
+      } finally {
+        // Remove loading class and add loaded class to show content
+        document.body.classList.remove('cms-loading');
+        document.body.classList.add('cms-loaded');
       }
     }
 

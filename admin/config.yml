@@ -17,6 +17,7 @@ collections:
           - { label: "Eyebrow Text", name: "eyebrow", widget: "string", default: "A Legacy of Taste & Trust" }
           - { label: "Main Headline", name: "headline", widget: "string", default: "Premium Tropical Beverages & Food Products" }
           - { label: "Lead Text", name: "lead", widget: "text", default: "From guava nectar to coconut juice — global flavors made local by Mira." }
+          - { label: "Hero Image", name: "image", widget: "image", default: "miracover.png" }
 
       - label: "About Section"
         name: "about"
@@ -25,6 +26,7 @@ collections:
         fields:
           - { label: "Section Heading", name: "heading", widget: "string", default: "Over 40 Years of Excellence" }
           - { label: "About Paragraph", name: "paragraph", widget: "text", default: "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability." }
+          - { label: "Side Image", name: "image", widget: "image", default: "miracover.png" }
           - label: "Stats"
             name: "stats"
             widget: "list"
@@ -43,27 +45,65 @@ collections:
         fields:
           - { label: "Section Heading", name: "heading", widget: "string", default: "Sustainability & Responsibility" }
           - { label: "Description", name: "description", widget: "text", default: "Partnering with ethical suppliers and advancing responsible practices across our value chain." }
-          - label: "Sustainability Boxes"
+          - label: "Feature Boxes"
             name: "items"
             widget: "list"
             fields:
               - { label: "Title", name: "title", widget: "string", default: "" }
               - { label: "Text", name: "text", widget: "text", default: "" }
+              - { label: "Icon/Image", name: "icon", widget: "image", required: false }
             default:
               - { title: "Responsible Sourcing", text: "Long-term partnerships with suppliers aligned on ethics and quality." }
               - { title: "Efficient Logistics", text: "Optimized routes for timely delivery and reduced environmental impact." }
               - { title: "Packaging Innovation", text: "Exploring recyclable, reduced-waste formats without compromising product integrity." }
+
+      - label: "Products Section"
+        name: "products"
+        file: "content/products.json"
+        format: json
+        fields:
+          - { label: "Section Heading", name: "heading", widget: "string", default: "EXPLORE our products" }
+          - { label: "Description", name: "description", widget: "text", default: "Premium tropical beverages and food products that celebrate authentic flavor." }
+          - label: "Product Items"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Product Name", name: "name", widget: "string", default: "" }
+              - { label: "Description", name: "text", widget: "text", default: "" }
+              - { label: "Product Image", name: "image", widget: "image", required: false }
+            default:
+              - { name: "Guava Nectar", text: "A rich tropical drink made from fresh guavas — sweet, refreshing, and naturally vibrant.", image: "" }
+              - { name: "Mango Nectar", text: "Golden mango nectar bursting with flavor — a tropical staple loved worldwide.", image: "" }
+
+      - label: "Facilities Section"
+        name: "facilities"
+        file: "content/facilities.json"
+        format: json
+        fields:
+          - { label: "Section Heading", name: "heading", widget: "string", default: "Facilities & Operations" }
+          - { label: "Description", name: "description", widget: "text", default: "Strategic locations and rigorous standards for optimal service." }
+          - label: "Facility Cards"
+            name: "facilities"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "" }
+              - { label: "Description", name: "description", widget: "text", default: "" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+            default:
+              - { title: "East Brunswick, NJ — Headquarters", description: "11 Elkins Rd. Our main hub coordinating nationwide distribution via major East Coast ports.", image: "" }
+              - { title: "Beaufort County, SC — Expansion", description: "48,960 sq. ft. facility enhancing logistics, production and capacity to serve the Southeast.", image: "" }
 
       - label: "Contact Information"
         name: "contact"
         file: "content/contact.json"
         format: json
         fields:
+          - { label: "Heading", name: "heading", widget: "string", default: "Let's Build Something Great" }
+          - { label: "Description", name: "description", widget: "text", default: "Interested in carrying our products or discussing private-label opportunities?" }
           - { label: "Address", name: "address", widget: "string", default: "11 Elkins Rd, East Brunswick, NJ 08816" }
           - { label: "Phone", name: "phone", widget: "string", default: "+1 (732) 613-7201" }
           - { label: "Email", name: "email", widget: "string", default: "info@mirainternationalfoods.com" }
-          - { label: "Contact Heading", name: "heading", widget: "string", default: "Let's Build Something Great" }
-          - { label: "Contact Description", name: "description", widget: "text", default: "Interested in carrying our products or discussing private-label opportunities?" }
+          - { label: "Map Image", name: "map", widget: "image", required: false }
 
       - label: "Footer"
         name: "footer"
@@ -71,4 +111,6 @@ collections:
         format: json
         fields:
           - { label: "Footer Text", name: "text", widget: "text", default: "We craft premium tropical beverages and food products that bring global flavor to local markets — for today and generations to come." }
+          - { label: "Logo", name: "logo", widget: "image", default: "miralogo.png" }
+          - { label: "Copyright", name: "copyright", widget: "string", default: "Mira International Foods, Inc. All rights reserved." }
 

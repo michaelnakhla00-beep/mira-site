@@ -92,7 +92,7 @@
 </div>
 
   <!-- ===== Editorial Hero ===== -->
-  <section id="home" class="hero-parallax relative min-h-[84vh] flex items-end">
+  <section id="home" class="hero-parallax relative min-h-[84vh] flex items-end hero-image">
     <div class="hero-overlay absolute inset-0"></div>
     <div class="relative z-10 w-full">
       <div class="max-w-7xl mx-auto px-6 py-24 md:py-32">
@@ -136,7 +136,7 @@
           </div>
         </div>
       </div>
-      <div data-aos="fade-left">
+      <div data-aos="fade-left" class="about-image">
         <img src="miracover.png" alt="Mira heritage and quality" loading="lazy" class="w-full rounded-2xl object-cover aspect-hero ring-1 ring-black/10" />
       </div>
     </div>
@@ -145,10 +145,10 @@
 <!-- PRODUCTS / BRAND SHOWCASE -->
 <section id="products" class="py-20 bg-white text-center overflow-hidden">
   <div class="max-w-6xl mx-auto px-6">
-    <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+    <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3 products-heading">
       EXPLORE <span class="font-normal text-[var(--stone)]">our products</span>
     </h2>
-    <p class="text-[var(--stone)] mb-10">
+    <p class="text-[var(--stone)] mb-10 products-description">
       Premium tropical beverages and food products that celebrate authentic flavor.
     </p>
 
@@ -158,7 +158,7 @@
 
       <div
         id="brandCarousel"
-        class="flex gap-10 overflow-x-auto scroll-smooth px-16 pb-4 no-scrollbar justify-start"
+        class="product-items flex gap-10 overflow-x-auto scroll-smooth px-16 pb-4 no-scrollbar justify-start"
       >
         <!-- 8 Brand Items -->
         <div
@@ -285,14 +285,14 @@
   <section id="facilities" class="py-14 md:py-20"> 
     <div class="max-w-7xl mx-auto px-6">
 <div class="max-w-2xl mx-auto text-center" data-aos="fade-up">
-  <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3">
+  <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3 facilities-heading">
     Facilities & Operations
   </h2>
-  <p class="text-[var(--stone)]">
+  <p class="text-[var(--stone)] facilities-description">
     Strategic locations and rigorous standards for optimal service.
   </p>
 </div>
-      <div class="mt-10 grid md:grid-cols-2 gap-7">
+      <div class="facilities-gallery mt-10 grid md:grid-cols-2 gap-7">
         <div class="card p-6" data-aos="fade-right">
           <img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800" alt="East Brunswick headquarters" class="w-full rounded-xl mb-5 aspect-card object-cover" />
           <h3 class="font-semibold text-[var(--navy)] mb-2">East Brunswick, NJ — Headquarters</h3>
@@ -528,7 +528,7 @@
     <!-- Column 1: Brand summary -->
     <div>
       <div class="flex items-center gap-3 mb-3">
-        <img src="miralogo.png" alt="Mira logo" class="h-9 w-auto" />
+        <img src="miralogo.png" alt="Mira logo" class="h-9 w-auto footer-logo" />
         <span class="font-semibold text-lg text-[var(--navy)]">Mira International Foods</span>
       </div>
       <p class="text-sm text-gray-600 leading-relaxed footer-text">
@@ -621,12 +621,21 @@
           const heroEyebrow = document.querySelector('.hero-eyebrow');
           const heroTitle = document.querySelector('.hero-title');
           const heroLead = document.querySelector('.hero-lead');
+          const heroSection = document.querySelector('.hero-image');
           
           if (heroEyebrow) heroEyebrow.textContent = hero.eyebrow || '';
           if (heroTitle) heroTitle.textContent = hero.headline || '';
           if (heroLead) heroLead.textContent = hero.lead || '';
           
-          console.log('✅ Hero content loaded');
+          // Update hero background image
+          if (hero.image && heroSection) {
+            const imageUrl = hero.image.startsWith('/') || hero.image.startsWith('http') 
+              ? hero.image 
+              : `/${hero.image}`;
+            heroSection.style.backgroundImage = `url('${imageUrl}')`;
+          }
+          
+          console.log('✅ Hero section updated');
         } else {
           console.warn('⚠️ Hero content file not found (will use default content)');
         }
@@ -638,9 +647,19 @@
           const aboutTitle = document.querySelector('.about-title');
           const aboutDescription = document.querySelector('.about-description');
           const statsContainer = document.querySelector('.about-stats');
+          const aboutImage = document.querySelector('.about-image img');
           
           if (aboutTitle) aboutTitle.textContent = about.heading || '';
           if (aboutDescription) aboutDescription.textContent = about.paragraph || about.text || '';
+          
+          // Update about image
+          if (about.image && aboutImage) {
+            const imageUrl = about.image.startsWith('/') || about.image.startsWith('http') 
+              ? about.image 
+              : `/${about.image}`;
+            aboutImage.src = imageUrl;
+            aboutImage.alt = about.imageAlt || 'Mira heritage and quality';
+          }
           
           // Load stats if they exist
           if (about.stats && Array.isArray(about.stats) && about.stats.length > 0 && statsContainer) {
@@ -770,7 +789,17 @@
               if (delay > 0) {
                 box.setAttribute('data-aos-delay', delay.toString());
               }
+              
+              let iconHTML = '';
+              if (item.icon) {
+                const iconUrl = item.icon.startsWith('/') || item.icon.startsWith('http') 
+                  ? item.icon 
+                  : `/${item.icon}`;
+                iconHTML = `<img src="${iconUrl}" alt="${title}" class="mb-4 w-12 h-12 object-cover" />`;
+              }
+              
               box.innerHTML = `
+                ${iconHTML}
                 <h3 class="card-title">${title}</h3>
                 <p class="card-copy">${text}</p>
               `;
@@ -791,6 +820,126 @@
           console.warn('⚠️ Sustainability content file not found (will use default content)');
         }
 
+        // PRODUCTS SECTION
+        const productsRes = await fetch('/content/products.json');
+        if (productsRes.ok) {
+          const products = await productsRes.json();
+          const productsHeading = document.querySelector('.products-heading');
+          const productsDescription = document.querySelector('.products-description');
+          const productsContainer = document.querySelector('.product-items');
+          
+          if (productsHeading) {
+            const headingParts = (products.heading || 'EXPLORE our products').split(' ');
+            if (headingParts.length > 1) {
+              productsHeading.innerHTML = `${headingParts[0]} <span class="font-normal text-[var(--stone)]">${headingParts.slice(1).join(' ')}</span>`;
+            } else {
+              productsHeading.textContent = products.heading || '';
+            }
+          }
+          if (productsDescription) productsDescription.textContent = products.description || '';
+          
+          // Load product items if they exist
+          if (products.items && Array.isArray(products.items) && products.items.length > 0 && productsContainer) {
+            productsContainer.innerHTML = '';
+            products.items.forEach((item) => {
+              const productDiv = document.createElement('div');
+              productDiv.className = 'brand';
+              productDiv.setAttribute('data-title', item.name || '');
+              productDiv.setAttribute('data-desc', item.text || '');
+              
+              const imageUrl = item.image 
+                ? (item.image.startsWith('/') || item.image.startsWith('http') ? item.image : `/${item.image}`)
+                : 'https://via.placeholder.com/600';
+              
+              productDiv.setAttribute('data-img', imageUrl);
+              productDiv.innerHTML = `
+                <img src="${imageUrl}" alt="${item.name || 'Product'}" />
+                <p>${item.name || ''}</p>
+              `;
+              
+              productsContainer.appendChild(productDiv);
+            });
+            
+            // Re-attach modal event listeners for new product items
+            productsContainer.querySelectorAll('.brand').forEach((item) => {
+              item.addEventListener('click', () => {
+                const modal = document.getElementById('productModal');
+                const modalImg = document.getElementById('modalImg');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalDesc = document.getElementById('modalDesc');
+                if (modal && modalImg && modalTitle && modalDesc) {
+                  modalImg.src = item.dataset.img || '';
+                  modalTitle.textContent = item.dataset.title || '';
+                  modalDesc.textContent = item.dataset.desc || '';
+                  modal.classList.add('show');
+                  document.body.style.overflow = 'hidden';
+                }
+              });
+            });
+            
+            console.log('✅ Products loaded');
+          }
+          
+          console.log('✅ Products section updated');
+        } else {
+          console.warn('⚠️ Products content file not found (will use default content)');
+        }
+
+        // FACILITIES SECTION
+        const facilitiesRes = await fetch('/content/facilities.json');
+        if (facilitiesRes.ok) {
+          const facilities = await facilitiesRes.json();
+          const facilitiesHeading = document.querySelector('.facilities-heading');
+          const facilitiesDescription = document.querySelector('.facilities-description');
+          const facilitiesContainer = document.querySelector('.facilities-gallery');
+          
+          if (facilitiesHeading) facilitiesHeading.textContent = facilities.heading || '';
+          if (facilitiesDescription) facilitiesDescription.textContent = facilities.description || '';
+          
+          // Load facility cards if they exist
+          if (facilities.facilities && Array.isArray(facilities.facilities) && facilities.facilities.length > 0 && facilitiesContainer) {
+            facilitiesContainer.innerHTML = '';
+            facilities.facilities.forEach((facility, index) => {
+              const delay = index === 0 ? 'fade-right' : 'fade-left';
+              const title = facility.title || '';
+              const description = facility.description || '';
+              
+              const card = document.createElement('div');
+              card.className = 'card p-6';
+              card.setAttribute('data-aos', delay);
+              
+              let imageHTML = '';
+              if (facility.image) {
+                const imageUrl = facility.image.startsWith('/') || facility.image.startsWith('http') 
+                  ? facility.image 
+                  : `/${facility.image}`;
+                imageHTML = `<img src="${imageUrl}" alt="${title}" class="w-full rounded-xl mb-5 aspect-card object-cover" />`;
+              } else {
+                imageHTML = '<div class="w-full rounded-xl mb-5 aspect-card bg-gray-200"></div>';
+              }
+              
+              card.innerHTML = `
+                ${imageHTML}
+                <h3 class="font-semibold text-[var(--navy)] mb-2">${title}</h3>
+                <p class="text-gray-600 text-sm">${description}</p>
+              `;
+              
+              facilitiesContainer.appendChild(card);
+            });
+            
+            // Re-initialize AOS for new elements if available
+            if (window.AOS) {
+              AOS.refresh();
+            }
+            
+            console.log('✅ Facilities loaded');
+          }
+          
+          console.log('✅ Facilities section updated');
+        } else {
+          console.warn('⚠️ Facilities content file not found (will use default content)');
+        }
+
         // CONTACT SECTION
         const contactRes = await fetch('/content/contact.json');
         if (contactRes.ok) {
@@ -804,6 +953,17 @@
           if (contactHeading) contactHeading.textContent = contact.heading || '';
           if (contactDescription) contactDescription.textContent = contact.description || contact.text || '';
           if (contactAddress) contactAddress.textContent = contact.address || '';
+          
+          // Update contact map image if exists
+          if (contact.map) {
+            const mapImg = document.querySelector('.contact-map img');
+            if (mapImg) {
+              const imageUrl = contact.map.startsWith('/') || contact.map.startsWith('http') 
+                ? contact.map 
+                : `/${contact.map}`;
+              mapImg.src = imageUrl;
+            }
+          }
           
           if (contactPhone && contact.phone) {
             contactPhone.textContent = contact.phone || '';
@@ -851,8 +1011,26 @@
         if (footerRes.ok) {
           const footer = await footerRes.json();
           const footerText = document.querySelector('.footer-text');
+          const footerLogo = document.querySelector('.footer-logo');
           
           if (footerText) footerText.textContent = footer.text || '';
+          
+          // Update footer logo
+          if (footer.logo && footerLogo) {
+            const imageUrl = footer.logo.startsWith('/') || footer.logo.startsWith('http') 
+              ? footer.logo 
+              : `/${footer.logo}`;
+            footerLogo.src = imageUrl;
+          }
+          
+          // Update copyright if exists
+          if (footer.copyright) {
+            const copyrightEl = document.querySelector('footer .text-xs.text-gray-500');
+            if (copyrightEl) {
+              const year = new Date().getFullYear();
+              copyrightEl.innerHTML = `© ${year} ${footer.copyright}`;
+            }
+          }
           
           console.log('✅ Footer content loaded');
         } else {

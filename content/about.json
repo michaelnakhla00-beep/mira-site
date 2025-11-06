@@ -1,4 +1,19 @@
 {
-  "heading": "Over 40 Years of Excellence!",
-  "paragraph": "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability."
+  "heading": "Over 40 Years of Excellence",
+  "paragraph": "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability.",
+  "image": "miracover.png",
+  "stats": [
+    {
+      "label": "40",
+      "description": "Years"
+    },
+    {
+      "label": "30000",
+      "description": "Retail Partners"
+    },
+    {
+      "label": "$2M+",
+      "description": "Facility Investment"
+    }
+  ]
 }

@@ -725,10 +725,31 @@
   
   <!-- CMS Content Loader -->
   <script>
+    // Helper function to show content and hide loading bar
+    function showContentAndHideLoader() {
+      const loader = document.getElementById('cmsLoader');
+      if (loader) {
+        loader.classList.add('complete');
+        setTimeout(() => {
+          loader.classList.add('hidden');
+          setTimeout(() => loader.remove(), 400);
+        }, 200);
+      }
+      
+      // Remove loading class and show content immediately
+      document.body.classList.remove('cms-loading');
+      
+      // Show all hidden elements immediately
+      const hiddenElements = document.querySelectorAll('.hero-title, .hero-eyebrow, .hero-lead, .about-title, .about-description, .products-heading, .products-description, .facilities-heading, .facilities-description, .sustain-title, .sustain-paragraph, .contact-heading, .contact-description, .footer-text');
+      hiddenElements.forEach(el => {
+        el.style.opacity = '1';
+      });
+    }
+    
     async function loadCMSContent() {
       // cms-loading class is already on body tag to hide content immediately
       try {
-        // HERO SECTION
+        // CRITICAL: Load Hero Section FIRST (above the fold - user sees this immediately)
         const heroRes = await fetch('/content/hero.json');
         if (heroRes.ok) {
           const hero = await heroRes.json();
@@ -753,429 +774,444 @@
         } else {
           console.warn('⚠️ Hero content file not found (will use default content)');
         }
-
-        // ABOUT SECTION
-        const aboutRes = await fetch('/content/about.json');
-        if (aboutRes.ok) {
-          const about = await aboutRes.json();
-          const aboutTitle = document.querySelector('.about-title');
-          const aboutDescription = document.querySelector('.about-description');
-          const statsContainer = document.querySelector('.about-stats');
-          const aboutImage = document.querySelector('.about-image img');
-          
-          if (aboutTitle) aboutTitle.textContent = about.heading || '';
-          if (aboutDescription) aboutDescription.textContent = about.paragraph || about.text || '';
-          
-          // Update about image
-          if (about.image && aboutImage) {
-            const imageUrl = about.image.startsWith('/') || about.image.startsWith('http') 
-              ? about.image 
-              : `/${about.image}`;
-            aboutImage.src = imageUrl;
-            aboutImage.alt = about.imageAlt || 'Mira heritage and quality';
-          }
-          
-          // Load stats if they exist
-          if (about.stats && Array.isArray(about.stats) && about.stats.length > 0 && statsContainer) {
-            statsContainer.innerHTML = '';
-            about.stats.forEach((stat, index) => {
-              const delay = (index + 1) * 100;
-              const label = stat.label || '';
-              const description = stat.description || '';
+        
+        // Hide loading bar and show hero content immediately (critical path complete)
+        showContentAndHideLoader();
+        
+        // NOW load other sections in parallel (non-blocking, background)
+        // They'll be ready by the time user scrolls down
+        loadOtherSectionsInParallel();
+        
+      } catch (error) {
+        console.warn('⚠️ Error loading hero content:', error);
+        // Still show content even if hero fails
+        showContentAndHideLoader();
+      }
+    }
+    
+    // Load all other sections in parallel (background loading)
+    async function loadOtherSectionsInParallel() {
+      try {
+        await Promise.all([
+          loadAboutSection(),
+          loadSustainabilitySection(),
+          loadProductsSection(),
+          loadFacilitiesSection(),
+          loadContactSection(),
+          loadFooterSection()
+        ]);
+        console.log('✅ All background sections loaded');
+      } catch (error) {
+        console.warn('⚠️ Some background sections failed to load:', error);
+      }
+    }
+    
+    // Helper function to load About section
+    async function loadAboutSection() {
+      const aboutRes = await fetch('/content/about.json');
+      if (aboutRes.ok) {
+        const about = await aboutRes.json();
+        const aboutTitle = document.querySelector('.about-title');
+        const aboutDescription = document.querySelector('.about-description');
+        const statsContainer = document.querySelector('.about-stats');
+        const aboutImage = document.querySelector('.about-image img');
+        
+        if (aboutTitle) aboutTitle.textContent = about.heading || '';
+        if (aboutDescription) aboutDescription.textContent = about.paragraph || about.text || '';
+        
+        // Update about image
+        if (about.image && aboutImage) {
+          const imageUrl = about.image.startsWith('/') || about.image.startsWith('http') 
+            ? about.image 
+            : `/${about.image}`;
+          aboutImage.src = imageUrl;
+          aboutImage.alt = about.imageAlt || 'Mira heritage and quality';
+        }
+        
+        // Load stats if they exist
+        if (about.stats && Array.isArray(about.stats) && about.stats.length > 0 && statsContainer) {
+          statsContainer.innerHTML = '';
+          about.stats.forEach((stat, index) => {
+            const delay = (index + 1) * 100;
+            const label = stat.label || '';
+            const description = stat.description || '';
+            
+            // Check if label is numeric (for counter animation)
+            const numericMatch = label.replace(/[^0-9]/g, '');
+            const isNumeric = numericMatch.length > 0;
+            
+            const card = document.createElement('div');
+            card.className = 'card p-5 text-center';
+            card.setAttribute('data-aos', 'fade-up');
+            card.setAttribute('data-aos-delay', delay.toString());
+            
+            if (isNumeric) {
+              // Extract numeric value for counter
+              const numericValue = parseInt(numericMatch, 10);
+              const prefix = label.includes('$') ? '$' : '';
+              let suffix = '';
+              if (label.includes('M+')) suffix = 'M+';
+              else if (label.includes('K+')) suffix = 'K+';
+              else if (label.includes('M')) suffix = 'M';
+              else if (label.includes('K')) suffix = 'K';
               
-              // Check if label is numeric (for counter animation)
-              const numericMatch = label.replace(/[^0-9]/g, '');
-              const isNumeric = numericMatch.length > 0;
-              
-              const card = document.createElement('div');
-              card.className = 'card p-5 text-center';
-              card.setAttribute('data-aos', 'fade-up');
-              card.setAttribute('data-aos-delay', delay.toString());
-              
-              if (isNumeric) {
-                // Extract numeric value for counter
-                const numericValue = parseInt(numericMatch, 10);
-                const prefix = label.includes('$') ? '$' : '';
-                let suffix = '';
-                if (label.includes('M+')) suffix = 'M+';
-                else if (label.includes('K+')) suffix = 'K+';
-                else if (label.includes('M')) suffix = 'M';
-                else if (label.includes('K')) suffix = 'K';
-                
-                // Build the counter HTML based on prefix/suffix
-                let counterHTML = '';
-                if (prefix || suffix) {
-                  // Has prefix or suffix - wrap counter in span
-                  counterHTML = `
-                    <div class="serif text-2xl text-[var(--navy)]">${prefix}<span class="counter" data-target="${numericValue}">0</span>${suffix}</div>
-                  `;
-                } else {
-                  // Pure number - counter on the div itself
-                  counterHTML = `
-                    <div class="serif text-2xl text-[var(--navy)] counter" data-target="${numericValue}">0</div>
-                  `;
-                }
-                
-                card.innerHTML = counterHTML + `<div class="stat-label">${description}</div>`;
+              // Build the counter HTML based on prefix/suffix
+              let counterHTML = '';
+              if (prefix || suffix) {
+                // Has prefix or suffix - wrap counter in span
+                counterHTML = `
+                  <div class="serif text-2xl text-[var(--navy)]">${prefix}<span class="counter" data-target="${numericValue}">0</span>${suffix}</div>
+                `;
               } else {
-                // Non-numeric label, display as-is
-                card.innerHTML = `
-                  <div class="serif text-2xl text-[var(--navy)]">${label}</div>
-                  <div class="stat-label">${description}</div>
+                // Pure number - counter on the div itself
+                counterHTML = `
+                  <div class="serif text-2xl text-[var(--navy)] counter" data-target="${numericValue}">0</div>
                 `;
               }
               
-              statsContainer.appendChild(card);
-            });
-            
-            // Re-initialize counter observer for new elements
-            const aboutSection = document.getElementById('about');
-            if (aboutSection) {
-              // Use the same counter animation logic as script.js
-              const animateCounter = (el, target, dur = 1400) => {
-                let start = 0;
-                const step = Math.max(1, Math.ceil(target / (dur / 16)));
-                const tick = () => {
-                  start += step;
-                  if (start < target) {
-                    el.textContent = start.toLocaleString();
-                    requestAnimationFrame(tick);
-                  } else {
-                    el.textContent = target.toLocaleString();
-                  }
-                };
-                tick();
-              };
-              
-              const countersObserved = new IntersectionObserver(
-                (entries) => {
-                  entries.forEach((e) => {
-                    if (e.isIntersecting) {
-                      e.target.querySelectorAll('.counter').forEach((c) => {
-                        const t = parseInt(c.getAttribute('data-target'), 10) || 0;
-                        if (t > 0) {
-                          animateCounter(c, t);
-                        }
-                      });
-                      countersObserved.unobserve(e.target);
-                    }
-                  });
-                },
-                { threshold: 0.3 }
-              );
-              
-              // Observe each stat card for counter animation
-              statsContainer.querySelectorAll('.card').forEach((card) => {
-                countersObserved.observe(card);
-              });
-            }
-            
-            console.log('✅ About stats loaded');
-          }
-          
-          console.log('✅ About content loaded');
-        } else {
-          console.warn('⚠️ About content file not found (will use default content)');
-        }
-
-        // SUSTAINABILITY SECTION
-        const sustainRes = await fetch('/content/sustainability.json');
-        if (sustainRes.ok) {
-          const sustain = await sustainRes.json();
-          const sustainTitle = document.querySelector('.sustain-title');
-          const sustainParagraph = document.querySelector('.sustain-paragraph');
-          const sustainContainer = document.querySelector('.sustain-items');
-          
-          if (sustainTitle) sustainTitle.textContent = sustain.heading || '';
-          if (sustainParagraph) sustainParagraph.textContent = sustain.description || '';
-          
-          // Load sustainability boxes if they exist
-          if (sustain.items && Array.isArray(sustain.items) && sustain.items.length > 0 && sustainContainer) {
-            sustainContainer.innerHTML = '';
-            sustain.items.forEach((item, index) => {
-              const delay = index * 100;
-              const title = item.title || '';
-              const text = item.text || '';
-              
-              const box = document.createElement('div');
-              box.className = 'card p-6';
-              box.setAttribute('data-aos', 'fade-up');
-              if (delay > 0) {
-                box.setAttribute('data-aos-delay', delay.toString());
-              }
-              
-              let iconHTML = '';
-              if (item.icon) {
-                const iconUrl = item.icon.startsWith('/') || item.icon.startsWith('http') 
-                  ? item.icon 
-                  : `/${item.icon}`;
-                iconHTML = `<img src="${iconUrl}" alt="${title}" class="mb-4 w-12 h-12 object-cover" />`;
-              }
-              
-              box.innerHTML = `
-                ${iconHTML}
-                <h3 class="card-title">${title}</h3>
-                <p class="card-copy">${text}</p>
-              `;
-              
-              sustainContainer.appendChild(box);
-            });
-            
-            // Re-initialize AOS for new elements if available
-            if (window.AOS) {
-              AOS.refresh();
-            }
-            
-            console.log('✅ Sustainability boxes loaded');
-          }
-          
-          console.log('✅ Sustainability content loaded');
-        } else {
-          console.warn('⚠️ Sustainability content file not found (will use default content)');
-        }
-
-        // PRODUCTS SECTION
-        const productsRes = await fetch('/content/products.json');
-        if (productsRes.ok) {
-          const products = await productsRes.json();
-          const productsHeading = document.querySelector('.products-heading');
-          const productsDescription = document.querySelector('.products-description');
-          const productsContainer = document.querySelector('.product-items');
-          
-          if (productsHeading) {
-            const headingParts = (products.heading || 'EXPLORE our products').split(' ');
-            if (headingParts.length > 1) {
-              productsHeading.innerHTML = `${headingParts[0]} <span class="font-normal text-[var(--stone)]">${headingParts.slice(1).join(' ')}</span>`;
+              card.innerHTML = counterHTML + `<div class="stat-label">${description}</div>`;
             } else {
-              productsHeading.textContent = products.heading || '';
-            }
-          }
-          if (productsDescription) productsDescription.textContent = products.description || '';
-          
-          // Load product items if they exist
-          if (products.items && Array.isArray(products.items) && products.items.length > 0 && productsContainer) {
-            productsContainer.innerHTML = '';
-            products.items.forEach((item) => {
-              const productDiv = document.createElement('div');
-              productDiv.className = 'brand';
-              productDiv.setAttribute('data-title', item.name || '');
-              productDiv.setAttribute('data-desc', item.text || '');
-              
-              const imageUrl = item.image 
-                ? (item.image.startsWith('/') || item.image.startsWith('http') ? item.image : `/${item.image}`)
-                : 'https://via.placeholder.com/600';
-              
-              productDiv.setAttribute('data-img', imageUrl);
-              productDiv.innerHTML = `
-                <img src="${imageUrl}" alt="${item.name || 'Product'}" />
-                <p>${item.name || ''}</p>
-              `;
-              
-              productsContainer.appendChild(productDiv);
-            });
-            
-            // Re-attach modal event listeners for new product items
-            productsContainer.querySelectorAll('.brand').forEach((item) => {
-              item.addEventListener('click', () => {
-                const modal = document.getElementById('productModal');
-                const modalImg = document.getElementById('modalImg');
-                const modalTitle = document.getElementById('modalTitle');
-                const modalDesc = document.getElementById('modalDesc');
-                if (modal && modalImg && modalTitle && modalDesc) {
-                  modalImg.src = item.dataset.img || '';
-                  modalTitle.textContent = item.dataset.title || '';
-                  modalDesc.textContent = item.dataset.desc || '';
-                  modal.classList.add('show');
-                  document.body.style.overflow = 'hidden';
-                }
-              });
-            });
-            
-            console.log('✅ Products loaded');
-          }
-          
-          console.log('✅ Products section updated');
-        } else {
-          console.warn('⚠️ Products content file not found (will use default content)');
-        }
-
-        // FACILITIES SECTION
-        const facilitiesRes = await fetch('/content/facilities.json');
-        if (facilitiesRes.ok) {
-          const facilities = await facilitiesRes.json();
-          const facilitiesHeading = document.querySelector('.facilities-heading');
-          const facilitiesDescription = document.querySelector('.facilities-description');
-          const facilitiesContainer = document.querySelector('.facilities-gallery');
-          
-          if (facilitiesHeading) facilitiesHeading.textContent = facilities.heading || '';
-          if (facilitiesDescription) facilitiesDescription.textContent = facilities.description || '';
-          
-          // Load facility cards if they exist
-          if (facilities.facilities && Array.isArray(facilities.facilities) && facilities.facilities.length > 0 && facilitiesContainer) {
-            facilitiesContainer.innerHTML = '';
-            facilities.facilities.forEach((facility, index) => {
-              const delay = index === 0 ? 'fade-right' : 'fade-left';
-              const title = facility.title || '';
-              const description = facility.description || '';
-              
-              const card = document.createElement('div');
-              card.className = 'card p-6';
-              card.setAttribute('data-aos', delay);
-              
-              let imageHTML = '';
-              if (facility.image) {
-                const imageUrl = facility.image.startsWith('/') || facility.image.startsWith('http') 
-                  ? facility.image 
-                  : `/${facility.image}`;
-                imageHTML = `<img src="${imageUrl}" alt="${title}" class="w-full rounded-xl mb-5 aspect-card object-cover" />`;
-              } else {
-                imageHTML = '<div class="w-full rounded-xl mb-5 aspect-card bg-gray-200"></div>';
-              }
-              
+              // Non-numeric label, display as-is
               card.innerHTML = `
-                ${imageHTML}
-                <h3 class="font-semibold text-[var(--navy)] mb-2">${title}</h3>
-                <p class="text-gray-600 text-sm">${description}</p>
+                <div class="serif text-2xl text-[var(--navy)]">${label}</div>
+                <div class="stat-label">${description}</div>
               `;
-              
-              facilitiesContainer.appendChild(card);
-            });
-            
-            // Re-initialize AOS for new elements if available
-            if (window.AOS) {
-              AOS.refresh();
             }
             
-            console.log('✅ Facilities loaded');
-          }
+            statsContainer.appendChild(card);
+          });
           
-          console.log('✅ Facilities section updated');
-        } else {
-          console.warn('⚠️ Facilities content file not found (will use default content)');
-        }
-
-        // CONTACT SECTION
-        const contactRes = await fetch('/content/contact.json');
-        if (contactRes.ok) {
-          const contact = await contactRes.json();
-          const contactHeading = document.querySelector('.contact-heading');
-          const contactDescription = document.querySelector('.contact-description');
-          const contactAddress = document.querySelector('.contact-address');
-          const contactPhone = document.querySelector('.contact-phone');
-          const contactEmail = document.querySelector('.contact-email');
-          
-          if (contactHeading) contactHeading.textContent = contact.heading || '';
-          if (contactDescription) contactDescription.textContent = contact.description || contact.text || '';
-          if (contactAddress) contactAddress.textContent = contact.address || '';
-          
-          // Update contact map image if exists
-          if (contact.map) {
-            const mapImg = document.querySelector('.contact-map img');
-            if (mapImg) {
-              const imageUrl = contact.map.startsWith('/') || contact.map.startsWith('http') 
-                ? contact.map 
-                : `/${contact.map}`;
-              mapImg.src = imageUrl;
-            }
-          }
-          
-          if (contactPhone && contact.phone) {
-            contactPhone.textContent = contact.phone || '';
-            const phoneHref = contact.phone.replace(/\D/g, '');
-            contactPhone.setAttribute('href', `tel:+1${phoneHref}`);
-          }
-          
-          if (contactEmail && contact.email) {
-            contactEmail.textContent = contact.email || '';
-            contactEmail.setAttribute('href', `mailto:${contact.email}`);
-          }
-          
-          // Update footer contact information
-          const footerAddress = document.querySelector('.contact-address-footer');
-          const footerPhone = document.querySelector('.contact-phone-footer');
-          const footerEmail = document.querySelector('.contact-email-footer');
-          
-          if (footerAddress && contact.address) footerAddress.textContent = contact.address;
-          
-          if (footerPhone && contact.phone) {
-            footerPhone.textContent = contact.phone;
-            const phoneHref = contact.phone.replace(/\D/g, '');
-            footerPhone.setAttribute('href', `tel:+1${phoneHref}`);
-          }
-          
-          if (footerEmail && contact.email) {
-            footerEmail.textContent = contact.email;
-            footerEmail.setAttribute('href', `mailto:${contact.email}`);
-          }
-          
-          // Update all email links in the page (Contact Sales buttons, etc.)
-          if (contact.email) {
-            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-              link.setAttribute('href', `mailto:${contact.email}`);
+          // Re-initialize counter observer for new elements
+          const aboutSection = document.getElementById('about');
+          if (aboutSection) {
+            // Use the same counter animation logic as script.js
+            const animateCounter = (el, target, dur = 1400) => {
+              let start = 0;
+              const step = Math.max(1, Math.ceil(target / (dur / 16)));
+              const tick = () => {
+                start += step;
+                if (start < target) {
+                  el.textContent = start.toLocaleString();
+                  requestAnimationFrame(tick);
+                } else {
+                  el.textContent = target.toLocaleString();
+                }
+              };
+              tick();
+            };
+            
+            const countersObserved = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((e) => {
+                  if (e.isIntersecting) {
+                    e.target.querySelectorAll('.counter').forEach((c) => {
+                      const t = parseInt(c.getAttribute('data-target'), 10) || 0;
+                      if (t > 0) {
+                        animateCounter(c, t);
+                      }
+                    });
+                    countersObserved.unobserve(e.target);
+                  }
+                });
+              },
+              { threshold: 0.3 }
+            );
+            
+            // Observe each stat card for counter animation
+            statsContainer.querySelectorAll('.card').forEach((card) => {
+              countersObserved.observe(card);
             });
           }
           
-          console.log('✅ Contact info loaded');
-        } else {
-          console.warn('⚠️ Contact content file not found (will use default content)');
+          console.log('✅ About stats loaded');
         }
+        
+        console.log('✅ About content loaded');
+      } else {
+        console.warn('⚠️ About content file not found (will use default content)');
+      }
+    }
 
-        // FOOTER
-        const footerRes = await fetch('/content/footer.json');
-        if (footerRes.ok) {
-          const footer = await footerRes.json();
-          const footerText = document.querySelector('.footer-text');
-          const footerLogo = document.querySelector('.footer-logo');
-          
-          if (footerText) footerText.textContent = footer.text || '';
-          
-          // Update footer logo
-          if (footer.logo && footerLogo) {
-            const imageUrl = footer.logo.startsWith('/') || footer.logo.startsWith('http') 
-              ? footer.logo 
-              : `/${footer.logo}`;
-            footerLogo.src = imageUrl;
-          }
-          
-          // Update copyright if exists
-          if (footer.copyright) {
-            const copyrightEl = document.querySelector('footer .text-xs.text-gray-500');
-            if (copyrightEl) {
-              const year = new Date().getFullYear();
-              copyrightEl.innerHTML = `© ${year} ${footer.copyright}`;
+    // Helper function to load Sustainability section
+    async function loadSustainabilitySection() {
+      const sustainRes = await fetch('/content/sustainability.json');
+      if (sustainRes.ok) {
+        const sustain = await sustainRes.json();
+        const sustainTitle = document.querySelector('.sustain-title');
+        const sustainParagraph = document.querySelector('.sustain-paragraph');
+        const sustainContainer = document.querySelector('.sustain-items');
+        
+        if (sustainTitle) sustainTitle.textContent = sustain.heading || '';
+        if (sustainParagraph) sustainParagraph.textContent = sustain.description || '';
+        
+        // Load sustainability boxes if they exist
+        if (sustain.items && Array.isArray(sustain.items) && sustain.items.length > 0 && sustainContainer) {
+          sustainContainer.innerHTML = '';
+          sustain.items.forEach((item, index) => {
+            const delay = index * 100;
+            const title = item.title || '';
+            const text = item.text || '';
+            
+            const box = document.createElement('div');
+            box.className = 'card p-6';
+            box.setAttribute('data-aos', 'fade-up');
+            if (delay > 0) {
+              box.setAttribute('data-aos-delay', delay.toString());
             }
+            
+            let iconHTML = '';
+            if (item.icon) {
+              const iconUrl = item.icon.startsWith('/') || item.icon.startsWith('http') 
+                ? item.icon 
+                : `/${item.icon}`;
+              iconHTML = `<img src="${iconUrl}" alt="${title}" class="mb-4 w-12 h-12 object-cover" />`;
+            }
+            
+            box.innerHTML = `
+              ${iconHTML}
+              <h3 class="card-title">${title}</h3>
+              <p class="card-copy">${text}</p>
+            `;
+            
+            sustainContainer.appendChild(box);
+          });
+          
+          // Re-initialize AOS for new elements if available
+          if (window.AOS) {
+            AOS.refresh();
           }
           
-          console.log('✅ Footer content loaded');
-        } else {
-          console.warn('⚠️ Footer content file not found (will use default content)');
+          console.log('✅ Sustainability boxes loaded');
         }
+        
+        console.log('✅ Sustainability content loaded');
+      } else {
+        console.warn('⚠️ Sustainability content file not found (will use default content)');
+      }
+    }
 
-      } catch (error) {
-        console.warn('⚠️ Some CMS content could not be loaded:', error);
-      } finally {
-        // Add complete animation before hiding
-        const loader = document.getElementById('cmsLoader');
-        if (loader) {
-          loader.classList.add('complete');
+    // Helper function to load Products section
+    async function loadProductsSection() {
+      const productsRes = await fetch('/content/products.json');
+      if (productsRes.ok) {
+        const products = await productsRes.json();
+        const productsHeading = document.querySelector('.products-heading');
+        const productsDescription = document.querySelector('.products-description');
+        const productsContainer = document.querySelector('.product-items');
+        
+        if (productsHeading) {
+          const headingParts = (products.heading || 'EXPLORE our products').split(' ');
+          if (headingParts.length > 1) {
+            productsHeading.innerHTML = `${headingParts[0]} <span class="font-normal text-[var(--stone)]">${headingParts.slice(1).join(' ')}</span>`;
+          } else {
+            productsHeading.textContent = products.heading || '';
+          }
+        }
+        if (productsDescription) productsDescription.textContent = products.description || '';
+        
+        // Load product items if they exist
+        if (products.items && Array.isArray(products.items) && products.items.length > 0 && productsContainer) {
+          productsContainer.innerHTML = '';
+          products.items.forEach((item) => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'brand';
+            productDiv.setAttribute('data-title', item.name || '');
+            productDiv.setAttribute('data-desc', item.text || '');
+            
+            const imageUrl = item.image 
+              ? (item.image.startsWith('/') || item.image.startsWith('http') ? item.image : `/${item.image}`)
+              : 'https://via.placeholder.com/600';
+            
+            productDiv.setAttribute('data-img', imageUrl);
+            productDiv.innerHTML = `
+              <img src="${imageUrl}" alt="${item.name || 'Product'}" />
+              <p>${item.name || ''}</p>
+            `;
+            
+            productsContainer.appendChild(productDiv);
+          });
           
-          // Wait a brief moment for complete animation, then fade out
-          setTimeout(() => {
-            loader.classList.add('hidden');
-            setTimeout(() => {
-              loader.remove();
-            }, 400);
-          }, 200);
+          // Re-attach modal event listeners for new product items
+          productsContainer.querySelectorAll('.brand').forEach((item) => {
+            item.addEventListener('click', () => {
+              const modal = document.getElementById('productModal');
+              const modalImg = document.getElementById('modalImg');
+              const modalTitle = document.getElementById('modalTitle');
+              const modalDesc = document.getElementById('modalDesc');
+              if (modal && modalImg && modalTitle && modalDesc) {
+                modalImg.src = item.dataset.img || '';
+                modalTitle.textContent = item.dataset.title || '';
+                modalDesc.textContent = item.dataset.desc || '';
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+              }
+            });
+          });
+          
+          console.log('✅ Products loaded');
         }
         
-        // Remove loading class and show content immediately
-        document.body.classList.remove('cms-loading');
+        console.log('✅ Products section updated');
+      } else {
+        console.warn('⚠️ Products content file not found (will use default content)');
+      }
+    }
+
+    // Helper function to load Facilities section
+    async function loadFacilitiesSection() {
+      const facilitiesRes = await fetch('/content/facilities.json');
+      if (facilitiesRes.ok) {
+        const facilities = await facilitiesRes.json();
+        const facilitiesHeading = document.querySelector('.facilities-heading');
+        const facilitiesDescription = document.querySelector('.facilities-description');
+        const facilitiesContainer = document.querySelector('.facilities-gallery');
         
-        // Show all hidden elements immediately (no fade, instant reveal)
-        const hiddenElements = document.querySelectorAll('.hero-title, .hero-eyebrow, .hero-lead, .about-title, .about-description, .products-heading, .products-description, .facilities-heading, .facilities-description, .sustain-title, .sustain-paragraph, .contact-heading, .contact-description, .footer-text');
-        hiddenElements.forEach(el => {
-          el.style.opacity = '1';
-        });
+        if (facilitiesHeading) facilitiesHeading.textContent = facilities.heading || '';
+        if (facilitiesDescription) facilitiesDescription.textContent = facilities.description || '';
+        
+        // Load facility cards if they exist
+        if (facilities.facilities && Array.isArray(facilities.facilities) && facilities.facilities.length > 0 && facilitiesContainer) {
+          facilitiesContainer.innerHTML = '';
+          facilities.facilities.forEach((facility, index) => {
+            const delay = index === 0 ? 'fade-right' : 'fade-left';
+            const title = facility.title || '';
+            const description = facility.description || '';
+            
+            const card = document.createElement('div');
+            card.className = 'card p-6';
+            card.setAttribute('data-aos', delay);
+            
+            let imageHTML = '';
+            if (facility.image) {
+              const imageUrl = facility.image.startsWith('/') || facility.image.startsWith('http') 
+                ? facility.image 
+                : `/${facility.image}`;
+              imageHTML = `<img src="${imageUrl}" alt="${title}" class="w-full rounded-xl mb-5 aspect-card object-cover" />`;
+            } else {
+              imageHTML = '<div class="w-full rounded-xl mb-5 aspect-card bg-gray-200"></div>';
+            }
+            
+            card.innerHTML = `
+              ${imageHTML}
+              <h3 class="font-semibold text-[var(--navy)] mb-2">${title}</h3>
+              <p class="text-gray-600 text-sm">${description}</p>
+            `;
+            
+            facilitiesContainer.appendChild(card);
+          });
+          
+          // Re-initialize AOS for new elements if available
+          if (window.AOS) {
+            AOS.refresh();
+          }
+          
+          console.log('✅ Facilities loaded');
+        }
+        
+        console.log('✅ Facilities section updated');
+      } else {
+        console.warn('⚠️ Facilities content file not found (will use default content)');
+      }
+    }
+
+    // Helper function to load Contact section
+    async function loadContactSection() {
+      const contactRes = await fetch('/content/contact.json');
+      if (contactRes.ok) {
+        const contact = await contactRes.json();
+        const contactHeading = document.querySelector('.contact-heading');
+        const contactDescription = document.querySelector('.contact-description');
+        const contactAddress = document.querySelector('.contact-address');
+        const contactPhone = document.querySelector('.contact-phone');
+        const contactEmail = document.querySelector('.contact-email');
+        
+        if (contactHeading) contactHeading.textContent = contact.heading || '';
+        if (contactDescription) contactDescription.textContent = contact.description || contact.text || '';
+        if (contactAddress) contactAddress.textContent = contact.address || '';
+        
+        // Update contact map image if exists
+        if (contact.map) {
+          const mapImg = document.querySelector('.contact-map img');
+          if (mapImg) {
+            const imageUrl = contact.map.startsWith('/') || contact.map.startsWith('http') 
+              ? contact.map 
+              : `/${contact.map}`;
+            mapImg.src = imageUrl;
+          }
+        }
+        
+        if (contactPhone && contact.phone) {
+          contactPhone.textContent = contact.phone || '';
+          const phoneHref = contact.phone.replace(/\D/g, '');
+          contactPhone.setAttribute('href', `tel:+1${phoneHref}`);
+        }
+        
+        if (contactEmail && contact.email) {
+          contactEmail.textContent = contact.email || '';
+          contactEmail.setAttribute('href', `mailto:${contact.email}`);
+        }
+        
+        // Update footer contact information
+        const footerAddress = document.querySelector('.contact-address-footer');
+        const footerPhone = document.querySelector('.contact-phone-footer');
+        const footerEmail = document.querySelector('.contact-email-footer');
+        
+        if (footerAddress && contact.address) footerAddress.textContent = contact.address;
+        
+        if (footerPhone && contact.phone) {
+          footerPhone.textContent = contact.phone;
+          const phoneHref = contact.phone.replace(/\D/g, '');
+          footerPhone.setAttribute('href', `tel:+1${phoneHref}`);
+        }
+        
+        if (footerEmail && contact.email) {
+          footerEmail.textContent = contact.email;
+          footerEmail.setAttribute('href', `mailto:${contact.email}`);
+        }
+        
+        // Update all email links in the page (Contact Sales buttons, etc.)
+        if (contact.email) {
+          document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.setAttribute('href', `mailto:${contact.email}`);
+          });
+        }
+        
+        console.log('✅ Contact info loaded');
+      } else {
+        console.warn('⚠️ Contact content file not found (will use default content)');
+      }
+    }
+    
+    // Helper function to load Footer section
+    async function loadFooterSection() {
+      const footerRes = await fetch('/content/footer.json');
+      if (footerRes.ok) {
+        const footer = await footerRes.json();
+        const footerText = document.querySelector('.footer-text');
+        const footerLogo = document.querySelector('.footer-logo');
+        
+        if (footerText) footerText.textContent = footer.text || '';
+        
+        // Update footer logo
+        if (footer.logo && footerLogo) {
+          const imageUrl = footer.logo.startsWith('/') || footer.logo.startsWith('http') 
+            ? footer.logo 
+            : `/${footer.logo}`;
+          footerLogo.src = imageUrl;
+        }
+        
+        // Update copyright if exists
+        if (footer.copyright) {
+          const copyrightEl = document.querySelector('footer .text-xs.text-gray-500');
+          if (copyrightEl) {
+            const year = new Date().getFullYear();
+            copyrightEl.innerHTML = `© ${year} ${footer.copyright}`;
+          }
+        }
+        
+        console.log('✅ Footer content loaded');
+      } else {
+        console.warn('⚠️ Footer content file not found (will use default content)');
       }
     }
 

@@ -45,3 +45,10 @@ collections:
           - { label: "Contact Heading", name: "heading", widget: "string", default: "Let's Build Something Great" }
           - { label: "Contact Description", name: "description", widget: "text", default: "Interested in carrying our products or discussing private-label opportunities?" }
 
+      - label: "Footer"
+        name: "footer"
+        file: "content/footer.json"
+        format: json
+        fields:
+          - { label: "Footer Text", name: "text", widget: "text", default: "We craft premium tropical beverages and food products that bring global flavor to local markets — for today and generations to come." }
+

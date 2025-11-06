@@ -22,8 +22,27 @@
   <!-- Styles -->
   <link rel="preload" as="image" href="miracover.png"/>
   <link rel="stylesheet" href="style.css">
+  <!-- CMS Loading - Hide content immediately to prevent flash -->
+  <style>
+    .cms-loading .hero-title,
+    .cms-loading .hero-eyebrow,
+    .cms-loading .hero-lead,
+    .cms-loading .about-title,
+    .cms-loading .about-description,
+    .cms-loading .products-heading,
+    .cms-loading .products-description,
+    .cms-loading .facilities-heading,
+    .cms-loading .facilities-description,
+    .cms-loading .sustain-title,
+    .cms-loading .sustain-paragraph,
+    .cms-loading .contact-heading,
+    .cms-loading .contact-description,
+    .cms-loading .footer-text {
+      opacity: 0 !important;
+    }
+  </style>
 </head>
-<body class="antialiased bg-[var(--mist)] text-[var(--ink)]">
+<body class="antialiased bg-[var(--mist)] text-[var(--ink)] cms-loading">
 
   <!-- ===== Top Navigation (clean, corporate) ===== -->
   <header id="site-nav" class="brand-nav fixed top-0 w-full z-50">
@@ -613,9 +632,7 @@
   <!-- CMS Content Loader -->
   <script>
     async function loadCMSContent() {
-      // Add loading class to body to hide content initially
-      document.body.classList.add('cms-loading');
-      
+      // cms-loading class is already on body tag to hide content immediately
       try {
         // HERO SECTION
         const heroRes = await fetch('/content/hero.json');

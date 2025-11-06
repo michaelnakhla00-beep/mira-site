@@ -218,38 +218,3 @@ body.menu-open {
   pointer-events: auto;
 }
 
-/* CMS Loading States - Prevent Flash of Unstyled Content */
-.cms-loading .hero-title,
-.cms-loading .hero-eyebrow,
-.cms-loading .hero-lead,
-.cms-loading .about-title,
-.cms-loading .about-description,
-.cms-loading .products-heading,
-.cms-loading .products-description,
-.cms-loading .facilities-heading,
-.cms-loading .facilities-description,
-.cms-loading .sustain-title,
-.cms-loading .sustain-paragraph,
-.cms-loading .contact-heading,
-.cms-loading .contact-description,
-.cms-loading .footer-text {
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
-}
-
-.cms-loaded .hero-title,
-.cms-loaded .hero-eyebrow,
-.cms-loaded .hero-lead,
-.cms-loaded .about-title,
-.cms-loaded .about-description,
-.cms-loaded .products-heading,
-.cms-loaded .products-description,
-.cms-loaded .facilities-heading,
-.cms-loaded .facilities-description,
-.cms-loaded .sustain-title,
-.cms-loaded .sustain-paragraph,
-.cms-loaded .contact-heading,
-.cms-loaded .contact-description,
-.cms-loaded .footer-text {
-  opacity: 1;
-}

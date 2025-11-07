@@ -2,6 +2,16 @@ backend:
   name: git-gateway
   branch: main
 
+logo_url: "/miralogo.png"
+
+editor:
+  theme:
+    color: "#D4AF37"
+  styles:
+    - "/admin/editor.css"
+
+load_script: "/admin/preview.js"
+
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
@@ -9,68 +19,150 @@ collections:
   - name: "site"
     label: "Site Content"
     files:
-      - label: "Hero Section"
+      - label: "Hero Banner"
         name: "hero"
         file: "content/hero.json"
         format: json
         fields:
-          - { label: "Eyebrow Text", name: "eyebrow", widget: "string", default: "A Legacy of Taste & Trust" }
-          - { label: "Main Headline", name: "headline", widget: "string", default: "Premium Tropical Beverages & Food Products" }
-          - { label: "Lead Text", name: "lead", widget: "text", default: "From guava nectar to coconut juice — global flavors made local by Mira." }
-          - { label: "Hero Image", name: "image", widget: "image", default: "miracover.png" }
+          - label: "Eyebrow / Kicker"
+            name: "eyebrow"
+            widget: "string"
+            default: "A Legacy of Taste & Trust"
+            hint: "Short uppercase teaser above the headline (approx. 3–5 words)."
+          - label: "Main Headline"
+            name: "headline"
+            widget: "string"
+            default: "Premium Tropical Beverages & Food Products"
+            hint: "Hero headline. Keep it bold and under 80 characters."
+          - label: "Lead Paragraph"
+            name: "lead"
+            widget: "text"
+            default: "From guava nectar to coconut juice — global flavors made local by Mira."
+            hint: "Support copy, 1–2 sentences that reinforce the brand promise."
+          - label: "Hero Image"
+            name: "image"
+            widget: "image"
+            default: "miracover.png"
+            hint: "Recommended 1800×1200px JPG/PNG. High-impact lifestyle or product visual."
 
-      - label: "About Section"
+      - label: "About Story"
         name: "about"
         file: "content/about.json"
         format: json
         fields:
-          - { label: "Section Heading", name: "heading", widget: "string", default: "Over 40 Years of Excellence" }
-          - { label: "About Paragraph", name: "paragraph", widget: "text", default: "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability." }
-          - { label: "Side Image", name: "image", widget: "image", default: "miracover.png" }
-          - label: "Stats"
+          - label: "Section Heading"
+            name: "heading"
+            widget: "string"
+            default: "Over 40 Years of Excellence"
+            hint: "Headline for the About section (e.g., heritage or credibility statement)."
+          - label: "Body Copy"
+            name: "paragraph"
+            widget: "text"
+            default: "Mira International Foods is a family-owned company headquartered in East Brunswick, New Jersey. For over four decades, we've crafted and distributed premium beverages and food products to the U.S. market, combining global sourcing with local reliability."
+            hint: "One concise paragraph (120–180 words) that tells the Mira story."
+          - label: "Feature Image"
+            name: "image"
+            widget: "image"
+            default: "miracover.png"
+            hint: "Recommended 1200×900px JPG/PNG. Show facilities, team, or product craftsmanship."
+          - label: "Impact Statistics"
             name: "stats"
             widget: "list"
+            summary: "{{fields.label}} — {{fields.description}}"
+            label_singular: "Statistic"
             fields:
-              - { label: "Number or Label", name: "label", widget: "string", default: "" }
-              - { label: "Description", name: "description", widget: "string", default: "" }
+              - label: "Number or Label"
+                name: "label"
+                widget: "string"
+                default: ""
+                hint: "Numeric stat or short label (e.g., 40, 30K+, $2M+)."
+              - label: "Descriptor"
+                name: "description"
+                widget: "string"
+                default: ""
+                hint: "What the stat represents (e.g., Years, Retail Partners, Facility Investment)."
             default:
               - { label: "40", description: "Years" }
               - { label: "30000", description: "Retail Partners" }
               - { label: "$2M+", description: "Facility Investment" }
 
-      - label: "Sustainability Section"
+      - label: "Sustainability Pillars"
         name: "sustainability"
         file: "content/sustainability.json"
         format: json
         fields:
-          - { label: "Section Heading", name: "heading", widget: "string", default: "Sustainability & Responsibility" }
-          - { label: "Description", name: "description", widget: "text", default: "Partnering with ethical suppliers and advancing responsible practices across our value chain." }
-          - label: "Feature Boxes"
+          - label: "Section Heading"
+            name: "heading"
+            widget: "string"
+            default: "Sustainability & Responsibility"
+            hint: "Headline for the sustainability section (values-driven statement)."
+          - label: "Intro Copy"
+            name: "description"
+            widget: "text"
+            default: "Partnering with ethical suppliers and advancing responsible practices across our value chain."
+            hint: "1–2 sentences introducing Mira's sustainability philosophy."
+          - label: "Feature Pillars"
             name: "items"
             widget: "list"
+            summary: "{{fields.title}}"
+            label_singular: "Pillar"
             fields:
-              - { label: "Title", name: "title", widget: "string", default: "" }
-              - { label: "Text", name: "text", widget: "text", default: "" }
-              - { label: "Icon/Image", name: "icon", widget: "image", required: false }
+              - label: "Title"
+                name: "title"
+                widget: "string"
+                default: ""
+                hint: "Name of the pillar (e.g., Responsible Sourcing)."
+              - label: "Description"
+                name: "text"
+                widget: "text"
+                default: ""
+                hint: "Brief explanation (1–2 sentences)."
+              - label: "Icon or Image"
+                name: "icon"
+                widget: "image"
+                required: false
+                hint: "Optional 128×128px icon or supporting image."
             default:
               - { title: "Responsible Sourcing", text: "Long-term partnerships with suppliers aligned on ethics and quality." }
               - { title: "Efficient Logistics", text: "Optimized routes for timely delivery and reduced environmental impact." }
               - { title: "Packaging Innovation", text: "Exploring recyclable, reduced-waste formats without compromising product integrity." }
 
-      - label: "Products Section"
+      - label: "Product Carousel"
         name: "products"
         file: "content/products.json"
         format: json
         fields:
-          - { label: "Section Heading", name: "heading", widget: "string", default: "EXPLORE our products" }
-          - { label: "Description", name: "description", widget: "text", default: "Premium tropical beverages and food products that celebrate authentic flavor." }
+          - label: "Section Heading"
+            name: "heading"
+            widget: "string"
+            default: "EXPLORE our products"
+            hint: "Hero heading for the carousel. Uppercase word + descriptor works well."
+          - label: "Intro Copy"
+            name: "description"
+            widget: "text"
+            default: "Premium tropical beverages and food products that celebrate authentic flavor."
+            hint: "Short supporting copy (1–2 sentences)."
           - label: "Product Items"
             name: "items"
             widget: "list"
+            summary: "{{fields.name}}"
+            label_singular: "Product"
             fields:
-              - { label: "Product Name", name: "name", widget: "string", default: "" }
-              - { label: "Description", name: "text", widget: "text", default: "" }
-              - { label: "Product Image", name: "image", widget: "image", required: false }
+              - label: "Product Name"
+                name: "name"
+                widget: "string"
+                default: ""
+                hint: "Product title (e.g., Guava Nectar)."
+              - label: "Description"
+                name: "text"
+                widget: "text"
+                default: ""
+                hint: "Brief tasting note or product highlight (1–2 sentences)."
+              - label: "Product Image"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Square 600×600px image or bottle/lifestyle shot."
             default:
               - { name: "Guava Nectar", text: "A rich tropical drink made from fresh guavas — sweet, refreshing, and naturally vibrant.", image: "https://images.pexels.com/photos/5945646/pexels-photo-5945646.jpeg?auto=compress&cs=tinysrgb&w=600" }
               - { name: "Mango Nectar", text: "Golden mango nectar bursting with flavor — a tropical staple loved worldwide.", image: "https://images.pexels.com/photos/5945636/pexels-photo-5945636.jpeg?auto=compress&cs=tinysrgb&w=600" }
@@ -81,42 +173,100 @@ collections:
               - { name: "Aloe Vera Drink", text: "A refreshing beverage infused with real aloe pulp and a hint of sweetness.", image: "https://images.pexels.com/photos/5945634/pexels-photo-5945634.jpeg?auto=compress&cs=tinysrgb&w=600" }
               - { name: "Tropical Blend", text: "A multi-fruit nectar combining mango, guava, and pineapple for the ultimate refreshment.", image: "https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&w=600" }
 
-      - label: "Facilities Section"
+      - label: "Facilities Showcase"
         name: "facilities"
         file: "content/facilities.json"
         format: json
         fields:
-          - { label: "Section Heading", name: "heading", widget: "string", default: "Facilities & Operations" }
-          - { label: "Description", name: "description", widget: "text", default: "Strategic locations and rigorous standards for optimal service." }
+          - label: "Section Heading"
+            name: "heading"
+            widget: "string"
+            default: "Facilities & Operations"
+            hint: "Headline highlighting Mira's footprint or operational strength."
+          - label: "Intro Copy"
+            name: "description"
+            widget: "text"
+            default: "Strategic locations and rigorous standards for optimal service."
+            hint: "Supporting copy (1–2 sentences) about facilities or expansion."
           - label: "Facility Cards"
             name: "facilities"
             widget: "list"
+            summary: "{{fields.title}}"
+            label_singular: "Facility"
             fields:
-              - { label: "Title", name: "title", widget: "string", default: "" }
-              - { label: "Description", name: "description", widget: "text", default: "" }
-              - { label: "Image", name: "image", widget: "image", required: false }
+              - label: "Facility Title"
+                name: "title"
+                widget: "string"
+                default: ""
+                hint: "Facility name + location (e.g., East Brunswick, NJ — Headquarters)."
+              - label: "Description"
+                name: "description"
+                widget: "text"
+                default: ""
+                hint: "One sentence describing operations or capabilities."
+              - label: "Feature Image"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Landscape 1200×900px photo of the facility."
             default:
               - { title: "East Brunswick, NJ — Headquarters", description: "11 Elkins Rd. Our main hub coordinating nationwide distribution via major East Coast ports.", image: "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800" }
               - { title: "Beaufort County, SC — Expansion", description: "48,960 sq. ft. facility enhancing logistics, production and capacity to serve the Southeast.", image: "https://images.pexels.com/photos/4484072/pexels-photo-4484072.jpeg?auto=compress&cs=tinysrgb&w=800" }
 
-      - label: "Contact Information"
+      - label: "Contact & CTA"
         name: "contact"
         file: "content/contact.json"
         format: json
         fields:
-          - { label: "Heading", name: "heading", widget: "string", default: "Let's Build Something Great" }
-          - { label: "Description", name: "description", widget: "text", default: "Interested in carrying our products or discussing private-label opportunities?" }
-          - { label: "Address", name: "address", widget: "string", default: "11 Elkins Rd, East Brunswick, NJ 08816" }
-          - { label: "Phone", name: "phone", widget: "string", default: "+1 (732) 613-7201" }
-          - { label: "Email", name: "email", widget: "string", default: "info@mirainternationalfoods.com" }
-          - { label: "Map Image", name: "map", widget: "image", required: false }
+          - label: "Section Heading"
+            name: "heading"
+            widget: "string"
+            default: "Let's Build Something Great"
+            hint: "Invitation headline (e.g., partnership or sales CTA)."
+          - label: "Intro Copy"
+            name: "description"
+            widget: "text"
+            default: "Interested in carrying our products or discussing private-label opportunities?"
+            hint: "Lead-in message for the contact form (1–2 sentences)."
+          - label: "Address"
+            name: "address"
+            widget: "string"
+            default: "11 Elkins Rd, East Brunswick, NJ 08816"
+            hint: "Primary office or mailing address."
+          - label: "Phone"
+            name: "phone"
+            widget: "string"
+            default: "+1 (732) 613-7201"
+            hint: "Sales or main line phone number."
+          - label: "Email"
+            name: "email"
+            widget: "string"
+            default: "info@mirainternationalfoods.com"
+            hint: "Preferred contact email."
+          - label: "Map / Feature Image"
+            name: "map"
+            widget: "image"
+            required: false
+            hint: "Optional map or contact-related image (e.g., office exterior)."
 
-      - label: "Footer"
+      - label: "Global Footer"
         name: "footer"
         file: "content/footer.json"
         format: json
         fields:
-          - { label: "Footer Text", name: "text", widget: "text", default: "We craft premium tropical beverages and food products that bring global flavor to local markets — for today and generations to come." }
-          - { label: "Logo", name: "logo", widget: "image", default: "miralogo.png" }
-          - { label: "Copyright", name: "copyright", widget: "string", default: "Mira International Foods, Inc. All rights reserved." }
+          - label: "Footer Text"
+            name: "text"
+            widget: "text"
+            default: "We craft premium tropical beverages and food products that bring global flavor to local markets — for today and generations to come."
+            hint: "Short mission statement in the footer."
+          - label: "Footer Logo"
+            name: "logo"
+            widget: "image"
+            default: "miralogo.png"
+            hint: "Transparent PNG preferred. Displayed next to footer description."
+          - label: "Copyright Line"
+            name: "copyright"
+            widget: "string"
+            default: "Mira International Foods, Inc. All rights reserved."
+            hint: "Text appended after the © year."
 

@@ -4,16 +4,16 @@
   "image": "miracover.png",
   "stats": [
     {
-      "label": "40",
-      "description": "Years"
-    },
-    {
       "label": "30000",
       "description": "Retail Partners"
     },
     {
       "label": "$2M+",
       "description": "Facility Investment"
+    },
+    {
+      "label": "40+",
+      "description": "YEARS!"
     }
   ]
 }
